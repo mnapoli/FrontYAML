@@ -1,6 +1,6 @@
 # FrontYAML
 
-An implementation of YAML Front matter for PHP.
+An implementation of YAML Front matter for PHP. Can parse the YAML *and* the Markdown.
 
 ## Installation
 
