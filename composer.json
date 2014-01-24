@@ -1,0 +1,13 @@
+{
+    "name": "mnapoli/front-yaml",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Mni\\FrontYAML\\": "src/"
+        }
+    },
+    "require": {
+        "symfony/yaml": "~2.4",
+        "erusev/parsedown": "~0.8"
+    }
+}
