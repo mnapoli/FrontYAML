@@ -27,6 +27,12 @@ $yaml = $document->getYAML();
 $html = $document->getContent();
 ```
 
+If you don't want the Markdown to be parsed (maybe because it is not Markdown):
+
+```php
+$document = $parser->parse($str, false);
+```
+
 ## Example
 
 The following file:
