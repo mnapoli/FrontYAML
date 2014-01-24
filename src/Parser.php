@@ -58,7 +58,7 @@ class Parser
 
         // There is a Front matter
         unset($lines[0]);
-        $yaml = [];
+        $yaml = array();
         $i = 1;
 
         foreach ($lines as $line) {
