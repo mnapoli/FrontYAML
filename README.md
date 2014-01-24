@@ -2,6 +2,8 @@
 
 An implementation of YAML Front matter for PHP. Can parse the YAML *and* the Markdown.
 
+[![Build Status](https://travis-ci.org/mnapoli/FrontYAML.png?branch=master)](https://travis-ci.org/mnapoli/FrontYAML)
+
 ## Installation
 
 Require the project with Composer:
