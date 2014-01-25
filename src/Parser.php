@@ -49,10 +49,16 @@ class Parser
         $lines = explode(PHP_EOL, $str);
 
         if (count($lines) <= 1) {
+            if ($parseMarkdown) {
+                $str = $this->markdownParser->parse($str);
+            }
             return new Document(null, $str);
         }
 
         if (rtrim($lines[0]) !== '---') {
+            if ($parseMarkdown) {
+                $str = $this->markdownParser->parse($str);
+            }
             return new Document(null, $str);
         }
 
@@ -71,7 +77,7 @@ class Parser
         }
 
         $yaml = $this->yamlParser->parse(implode(PHP_EOL, $yaml));
-        $content = implode(array_slice($lines, $i));
+        $content = implode(PHP_EOL, array_slice($lines, $i));
 
         if ($parseMarkdown) {
             $content = $this->markdownParser->parse($content);

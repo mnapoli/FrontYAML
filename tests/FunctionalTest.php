@@ -55,4 +55,20 @@ EOF;
         $this->assertEquals(array('foo' => $expected), $document->getYAML());
         $this->assertEquals('<p>Foo</p>', $document->getContent());
     }
+
+    public function testMultilineMarkdown()
+    {
+        $parser = new Parser(new SymfonyYAMLParser(), new ParsedownParser());
+        $str = <<<EOF
+Foo
+
+Bar
+EOF;
+        $document = $parser->parse($str);
+        $expected = <<<EOF
+<p>Foo</p>
+<p>Bar</p>
+EOF;
+        $this->assertEquals($expected, $document->getContent());
+    }
 }
