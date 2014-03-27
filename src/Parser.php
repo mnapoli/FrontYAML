@@ -76,13 +76,22 @@ class Parser
             $i++;
         }
 
-        $yaml = $this->yamlParser->parse(implode(PHP_EOL, $yaml));
+        $yamlParser = $this->yamlParser;
+        $yamlPromise = function () use ($yaml, $yamlParser) {
+            return $yamlParser->parse(implode(PHP_EOL, $yaml));
+        };
+
         $content = implode(PHP_EOL, array_slice($lines, $i));
 
         if ($parseMarkdown) {
-            $content = $this->markdownParser->parse($content);
+            $markdownParser = $this->markdownParser;
+            $contentPromise = function () use ($content, $markdownParser) {
+                return $markdownParser->parse($content);
+            };
+        } else {
+            $contentPromise = $content;
         }
 
-        return new Document($yaml, $content);
+        return new Document($yamlPromise, $contentPromise);
     }
 }
