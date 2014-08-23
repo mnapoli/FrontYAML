@@ -8,6 +8,6 @@
     },
     "require": {
         "symfony/yaml": "~2.1",
-        "erusev/parsedown": "~0.8"
+        "erusev/parsedown": "~1.0"
     }
 }
