@@ -27,7 +27,7 @@ class Document
 
     /**
      * @param mixed  $yaml    YAML content.
-     * @param string $content Content of the document.
+     * @param mixed $content Content of the document.
      */
     public function __construct($yaml, $content)
     {
@@ -40,6 +40,9 @@ class Document
      */
     public function getYAML()
     {
+        if (is_callable($this->yaml)) {
+            $this->yaml = call_user_func($this->yaml);
+        }
         return $this->yaml;
     }
 
@@ -48,6 +51,9 @@ class Document
      */
     public function getContent()
     {
+        if (is_callable($this->content)) {
+            $this->content = call_user_func($this->content);
+        }
         return $this->content;
     }
 }
