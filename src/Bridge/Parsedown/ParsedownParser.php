@@ -18,9 +18,9 @@ use Parsedown;
  */
 class ParsedownParser implements MarkdownParser
 {
-    public function __construct()
+    public function __construct(Parsedown $parsedown = null)
     {
-        $this->parser = new Parsedown();
+        $this->parser = $parsedown ?: new Parsedown();
     }
 
     /**
