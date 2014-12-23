@@ -75,17 +75,26 @@ EOF;
 
     public function testCrossOsMultiline() {
       $parser = new Parser(new SymfonyYAMLParser(), new ParsedownParser());
-      // the 2 files have exact same content,
-      // but one is encoded using DOS-like EOL, the other using UNIX-like EOL
-      $unix = file_get_contents( __DIR__.DIRECTORY_SEPARATOR.'_files'.DIRECTORY_SEPARATOR.'unix.md');
-      $dos = file_get_contents( __DIR__.DIRECTORY_SEPARATOR.'_files'.DIRECTORY_SEPARATOR.'dos.md');
+      $content = <<<EOF
+---
+lorem: ipsum
+multiline: |
+           I am
+           a multine text
+---
+Lorem
+Ipsum
+EOF;
+      $unix = str_replace("\r", '', $content);
+      $dos = str_replace("\n", "\r\n", $unix);
+
       $doc_unix = $parser->parse($unix);
       $doc_dos = $parser->parse($dos);
 
       $dos_yaml = $doc_dos->getYAML();
       $unix_yaml = $doc_unix->getYAML();
 
-      $expected = <<<EOF
+      $expected_multiline = <<<EOF
 I am
 a multine text
 EOF;
@@ -93,11 +102,11 @@ EOF;
       $this->assertSame($this->normalizeEOL($doc_dos->getContent()), $this->normalizeEOL($doc_unix->getContent()));
       $this->assertSame($dos_yaml, $unix_yaml);
       $this->assertSame('ipsum', $dos_yaml['lorem']);
-      $this->assertSame($this->normalizeEOL($expected), $this->normalizeEOL($dos_yaml['multiline']));
+      $this->assertSame($this->normalizeEOL($expected_multiline), $this->normalizeEOL($dos_yaml['multiline']));
 
     }
 
     private function normalizeEOL($str) {
-      return implode(PHP_EOL, array_map('rtrim', preg_split('~\n~', $str)));
+      return str_replace("\r", '', $str);
     }
 }
