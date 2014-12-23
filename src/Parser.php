@@ -53,9 +53,9 @@ class Parser
         $yamlContent = $hasFrontMatter ? trim($matches[1]) : false;
 
         if ($yamlContent === false) {
+            $str = preg_replace('~^[-]{3}[\r\n|\n]+[-]{3}~s', '', $str, 1);
             if ($parseMarkdown) {
-                $clean = preg_replace('~^[-]{3}[\r\n|\n]+[-]{3}~s', '', $str, 1);
-                $str = $this->markdownParser->parse($clean);
+                $str = $this->markdownParser->parse($str);
             }
             return new Document(null, $str);
         }
