@@ -11,6 +11,7 @@ use Mni\FrontYAML\Parser;
  */
 class FunctionalTest extends \PHPUnit_Framework_TestCase
 {
+
     public function testSimpleDocument()
     {
         $parser = new Parser(new SymfonyYAMLParser(), new ParsedownParser());
@@ -51,8 +52,8 @@ text containing ---
 ---
 foo bar
 EOF;
-
-        $this->assertEquals(array('foo' => $expected), $document->getYAML());
+        $yaml =  $document->getYAML();
+        $this->assertEquals($this->normalizeEOL($expected), $this->normalizeEOL($yaml['foo']));
         $this->assertEquals('<p>Foo</p>', $document->getContent());
     }
 
@@ -69,6 +70,10 @@ EOF;
 <p>Foo</p>
 <p>Bar</p>
 EOF;
-        $this->assertEquals($expected, $document->getContent());
+        $this->assertEquals($this->normalizeEOL($expected), $this->normalizeEOL($document->getContent()));
+    }
+
+    private function normalizeEOL($str) {
+      return implode(PHP_EOL, array_map('rtrim', preg_split('~\n~', $str)));
     }
 }
