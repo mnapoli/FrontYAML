@@ -46,7 +46,7 @@ class Parser
      */
     public function parse($str, $parseMarkdown = true)
     {
-        $regex = '~^[-]{3}[\n|\r]+(.*)[\n|\r]+[-]{3}~s';
+        $regex = '~^[-]{3}[\r\n|\n]+(.*)[\r\n|\n]+[-]{3}~s';
 
         $hasFrontMatter = preg_match($regex, $str, $matches);
 
@@ -54,7 +54,8 @@ class Parser
 
         if ($yamlContent === false) {
             if ($parseMarkdown) {
-                $str = $this->markdownParser->parse($str);
+                $clean = preg_replace('~^[-]{3}[\r\n|\n]+[-]{3}~s', '', $str, 1);
+                $str = $this->markdownParser->parse($clean);
             }
             return new Document(null, $str);
         }
