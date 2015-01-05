@@ -46,16 +46,14 @@ class Parser
      */
     public function parse($str, $parseMarkdown = true)
     {
-        $lines = explode(PHP_EOL, $str);
+        $regex = '~^[-]{3}[\r\n|\n]+(.*)[\r\n|\n]+[-]{3}~s';
 
-        if (count($lines) <= 1) {
-            if ($parseMarkdown) {
-                $str = $this->markdownParser->parse($str);
-            }
-            return new Document(null, $str);
-        }
+        $hasFrontMatter = preg_match($regex, $str, $matches);
 
-        if (rtrim($lines[0]) !== '---') {
+        $yamlContent = $hasFrontMatter ? trim($matches[1]) : false;
+
+        if ($yamlContent === false) {
+            $str = preg_replace('~^[-]{3}[\r\n|\n]+[-]{3}~s', '', $str, 1);
             if ($parseMarkdown) {
                 $str = $this->markdownParser->parse($str);
             }
@@ -63,21 +61,8 @@ class Parser
         }
 
         // There is a Front matter
-        unset($lines[0]);
-        $yaml = array();
-        $i = 1;
-
-        foreach ($lines as $line) {
-            if ($line === '---') {
-                break;
-            }
-
-            $yaml[] = $line;
-            $i++;
-        }
-
-        $yaml = $this->yamlParser->parse(implode(PHP_EOL, $yaml));
-        $content = implode(PHP_EOL, array_slice($lines, $i));
+        $yaml = $this->yamlParser->parse($yamlContent);
+        $content = ltrim(preg_replace($regex, '', $str, 1));
 
         if ($parseMarkdown) {
             $content = $this->markdownParser->parse($content);
