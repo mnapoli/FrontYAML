@@ -41,19 +41,22 @@ class Parser
      *
      * @param string $str
      * @param bool   $parseMarkdown Should the Markdown be turned into HTML?
+     * @param string $startSep      Front matter separator start
+     * @param string $endSep        Front matter separator end
      *
      * @return Document
      */
-    public function parse($str, $parseMarkdown = true)
+    public function parse($str, $parseMarkdown = true, $startSep = '---', $endSep = '---')
     {
-        $regex = '~^[-]{3}[\r\n|\n]+(.*)[\r\n|\n]+[-]{3}~s';
+        $left = '~^'.preg_quote($startSep).'{1}[\r\n|\n]+';
+        $right = preg_quote($endSep).'{1}~s';
 
-        $hasFrontMatter = preg_match($regex, $str, $matches);
+        $hasFrontMatter = preg_match($left.'(.*)[\r\n|\n]+'.$right, $str, $matches);
 
         $yamlContent = $hasFrontMatter ? trim($matches[1]) : false;
 
         if ($yamlContent === false) {
-            $str = preg_replace('~^[-]{3}[\r\n|\n]+[-]{3}~s', '', $str, 1);
+            $str = preg_replace($left.$right, '', $str, 1);
             if ($parseMarkdown) {
                 $str = $this->markdownParser->parse($str);
             }
@@ -62,7 +65,7 @@ class Parser
 
         // There is a Front matter
         $yaml = $this->yamlParser->parse($yamlContent);
-        $content = ltrim(preg_replace($regex, '', $str, 1));
+        $content = ltrim(preg_replace($left.'(.*)[\r\n|\n]+'.$right, '', $str, 1));
 
         if ($parseMarkdown) {
             $content = $this->markdownParser->parse($content);
