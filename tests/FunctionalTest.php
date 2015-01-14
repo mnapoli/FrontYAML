@@ -106,6 +106,21 @@ EOF;
         $this->assertSame($this->normalizeEOL($expected_multiline), $this->normalizeEOL($dos_yaml['multiline']));
     }
 
+    public function testNonGreedySeparator()
+    {
+        $parser = new Parser(new SymfonyYAMLParser(), new ParsedownParser());
+        $content = <<<EOF
+---
+lorem: ipsum
+---
+Lorem
+---
+Ipsum
+EOF;
+        $document = $parser->parse($content);
+        $this->assertSame(array('lorem' => 'ipsum'), $document->getYAML());
+    }
+
     private function normalizeEOL($str)
     {
         return str_replace("\r", '', $str);
