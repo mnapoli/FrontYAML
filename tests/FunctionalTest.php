@@ -89,21 +89,24 @@ EOF;
         $unix = str_replace("\r", '', $content);
         $dos = str_replace("\n", "\r\n", $unix);
 
-        $doc_unix = $parser->parse($unix);
-        $doc_dos = $parser->parse($dos);
+        $unixDocument = $parser->parse($unix);
+        $dosDocument = $parser->parse($dos);
 
-        $dos_yaml = $doc_dos->getYAML();
-        $unix_yaml = $doc_unix->getYAML();
+        $dosYaml = $dosDocument->getYAML();
+        $unixYaml = $unixDocument->getYAML();
 
-        $expected_multiline = <<<EOF
+        $expectedHtml = <<<EOF
 I am
 a multine text
 EOF;
 
-        $this->assertSame($this->normalizeEOL($doc_dos->getContent()), $this->normalizeEOL($doc_unix->getContent()));
-        $this->assertSame($dos_yaml, $unix_yaml);
-        $this->assertSame('ipsum', $dos_yaml['lorem']);
-        $this->assertSame($this->normalizeEOL($expected_multiline), $this->normalizeEOL($dos_yaml['multiline']));
+        $this->assertSame(
+            $this->normalizeEOL($dosDocument->getContent()),
+            $this->normalizeEOL($unixDocument->getContent())
+        );
+        $this->assertSame($dosYaml, $unixYaml);
+        $this->assertSame('ipsum', $dosYaml['lorem']);
+        $this->assertSame($this->normalizeEOL($expectedHtml), $this->normalizeEOL($dosYaml['multiline']));
     }
 
     public function testNonGreedySeparator()
