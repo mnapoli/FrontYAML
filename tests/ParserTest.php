@@ -168,4 +168,65 @@ EOF;
         $parser = new Parser($yamlParser, $markdownParser);
         $parser->parse('foo', false);
     }
+
+    public function testParseFrontYAMLEdgeCaseDelimiters()
+    {
+        $start = '*_-\)``.|.``(/-_*';
+        $end = '--({@}{._.}{@})--';
+        $yamlParser = $this->getMockForAbstractClass('Mni\FrontYAML\YAML\YAMLParser');
+        $yamlParser->expects($this->once())
+            ->method('parse')
+            ->with('foo: bar')
+            ->will($this->returnValue(array('foo' => 'bar')));
+
+        $markdownParser = $this->getMockForAbstractClass('Mni\FrontYAML\Markdown\MarkdownParser');
+        $markdownParser->expects($this->never())
+            ->method('parse');
+
+        $parser = new Parser($yamlParser, $markdownParser, $start, $end);
+        $str = <<<EOF
+*_-\)``.|.``(/-_*
+foo: bar
+--({@}{._.}{@})--
+bim
+EOF;
+        $document = $parser->parse($str, false);
+        $this->assertSame(array('foo' => 'bar'), $document->getYAML());
+        $this->assertEquals('bim', trim($document->getContent()));
+    }
+
+    public function testParseFrontYAMLArrayDelimiters()
+    {
+        $start = array('---','<!--');
+        $end = array('---','-->');
+        $yamlParser = $this->getMockForAbstractClass('Mni\FrontYAML\YAML\YAMLParser');
+        $yamlParser->expects($this->exactly(2))
+            ->method('parse')
+            ->with('foo: bar')
+            ->will($this->returnValue(array('foo' => 'bar')));
+
+        $markdownParser = $this->getMockForAbstractClass('Mni\FrontYAML\Markdown\MarkdownParser');
+        $markdownParser->expects($this->never())
+            ->method('parse');
+
+        $parser = new Parser($yamlParser, $markdownParser, $start, $end);
+        $str1 = <<<EOF
+<!--
+foo: bar
+-->
+bim
+EOF;
+        $str2 = <<<EOF
+---
+foo: bar
+---
+bim
+EOF;
+        $document1 = $parser->parse($str1, false);
+        $document2 = $parser->parse($str2, false);
+        $this->assertSame(array('foo' => 'bar'), $document1->getYAML());
+        $this->assertEquals('bim', trim($document1->getContent()));
+        $this->assertSame($document1->getYAML(), $document2->getYAML());
+        $this->assertEquals($document1->getContent(), $document2->getContent());
+    }
 }

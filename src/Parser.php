@@ -30,10 +30,26 @@ class Parser
      */
     private $markdownParser;
 
-    public function __construct(YAMLParser $yamlParser = null, MarkdownParser $markdownParser = null)
-    {
+    /**
+     * @var array
+     */
+    private $startSep;
+
+    /**
+     * @var array
+     */
+    private $endSep;
+
+    public function __construct(
+        YAMLParser $yamlParser = null,
+        MarkdownParser $markdownParser = null,
+        $startSep = '---',
+        $endSep = '---'
+    ) {
         $this->yamlParser = $yamlParser ?: new SymfonyYAMLParser();
         $this->markdownParser = $markdownParser ?: new ParsedownParser();
+        $this->startSep = array_filter((array) $startSep, 'is_string') ?: array('---');
+        $this->endSep = array_filter((array) $endSep, 'is_string') ?: array('---');
     }
 
     /**
@@ -46,28 +62,18 @@ class Parser
      */
     public function parse($str, $parseMarkdown = true)
     {
-        $regex = '~^[-]{3}[\r\n|\n]+(.*)[\r\n|\n]+[-]{3}~s';
+        $yaml = null;
+        $regex = '~^('
+            .implode('|', array_map('preg_quote', $this->startSep)) # $matches[1] start separator
+            ."){1}[\r\n|\n]*(.*)[\r\n|\n]+("                        # $matches[2] between separators
+            .implode('|', array_map('preg_quote', $this->endSep))   # $matches[3] end separator
+            ."){1}[\r\n|\n]*(.*)$~s";                               # $matches[4] document content
 
-        $hasFrontMatter = preg_match($regex, $str, $matches);
-
-        $yamlContent = $hasFrontMatter ? trim($matches[1]) : false;
-
-        if ($yamlContent === false) {
-            $str = preg_replace('~^[-]{3}[\r\n|\n]+[-]{3}~s', '', $str, 1);
-            if ($parseMarkdown) {
-                $str = $this->markdownParser->parse($str);
-            }
-            return new Document(null, $str);
+        if (preg_match($regex, $str, $matches) === 1) { // There is a Front matter
+            $yaml = trim($matches[2]) !== '' ? $this->yamlParser->parse(trim($matches[2])) : null;
+            $str = ltrim($matches[4]);
         }
 
-        // There is a Front matter
-        $yaml = $this->yamlParser->parse($yamlContent);
-        $content = ltrim(preg_replace($regex, '', $str, 1));
-
-        if ($parseMarkdown) {
-            $content = $this->markdownParser->parse($content);
-        }
-
-        return new Document($yaml, $content);
+        return new Document($yaml, $parseMarkdown ? $this->markdownParser->parse($str) : $str);
     }
 }
