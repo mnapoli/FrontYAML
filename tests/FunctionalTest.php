@@ -52,7 +52,7 @@ text containing ---
 ---
 foo bar
 EOF;
-        $yaml =  $document->getYAML();
+        $yaml = $document->getYAML();
         $this->assertEquals($this->normalizeEOL($expected), $this->normalizeEOL($yaml['foo']));
         $this->assertEquals('<p>Foo</p>', $document->getContent());
     }
@@ -73,9 +73,10 @@ EOF;
         $this->assertEquals($this->normalizeEOL($expected), $this->normalizeEOL($document->getContent()));
     }
 
-    public function testCrossOsMultiline() {
-      $parser = new Parser(new SymfonyYAMLParser(), new ParsedownParser());
-      $content = <<<EOF
+    public function testCrossOsMultiline()
+    {
+        $parser = new Parser(new SymfonyYAMLParser(), new ParsedownParser());
+        $content = <<<EOF
 ---
 lorem: ipsum
 multiline: |
@@ -85,28 +86,28 @@ multiline: |
 Lorem
 Ipsum
 EOF;
-      $unix = str_replace("\r", '', $content);
-      $dos = str_replace("\n", "\r\n", $unix);
+        $unix = str_replace("\r", '', $content);
+        $dos = str_replace("\n", "\r\n", $unix);
 
-      $doc_unix = $parser->parse($unix);
-      $doc_dos = $parser->parse($dos);
+        $doc_unix = $parser->parse($unix);
+        $doc_dos = $parser->parse($dos);
 
-      $dos_yaml = $doc_dos->getYAML();
-      $unix_yaml = $doc_unix->getYAML();
+        $dos_yaml = $doc_dos->getYAML();
+        $unix_yaml = $doc_unix->getYAML();
 
-      $expected_multiline = <<<EOF
+        $expected_multiline = <<<EOF
 I am
 a multine text
 EOF;
 
-      $this->assertSame($this->normalizeEOL($doc_dos->getContent()), $this->normalizeEOL($doc_unix->getContent()));
-      $this->assertSame($dos_yaml, $unix_yaml);
-      $this->assertSame('ipsum', $dos_yaml['lorem']);
-      $this->assertSame($this->normalizeEOL($expected_multiline), $this->normalizeEOL($dos_yaml['multiline']));
-
+        $this->assertSame($this->normalizeEOL($doc_dos->getContent()), $this->normalizeEOL($doc_unix->getContent()));
+        $this->assertSame($dos_yaml, $unix_yaml);
+        $this->assertSame('ipsum', $dos_yaml['lorem']);
+        $this->assertSame($this->normalizeEOL($expected_multiline), $this->normalizeEOL($dos_yaml['multiline']));
     }
 
-    private function normalizeEOL($str) {
-      return str_replace("\r", '', $str);
+    private function normalizeEOL($str)
+    {
+        return str_replace("\r", '', $str);
     }
 }
