@@ -8,7 +8,7 @@
     },
     "require": {
         "symfony/yaml": "~2.1",
-        "erusev/parsedown": "~1.0"
+        "erusev/parsedown": "dev-master#65116c3cb0953447eac742aa4ea5fc4aaaa22db9"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.0"
