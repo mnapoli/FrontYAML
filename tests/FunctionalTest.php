@@ -1,6 +1,6 @@
 <?php
 
-namespace Test\Mni\FrontYAML\Parser;
+namespace Mni\FrontYAML\Test;
 
 use Mni\FrontYAML\Bridge\Parsedown\ParsedownParser;
 use Mni\FrontYAML\Bridge\Symfony\SymfonyYAMLParser;

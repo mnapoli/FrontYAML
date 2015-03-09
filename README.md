@@ -9,12 +9,8 @@ An implementation of YAML Front matter for PHP. Can parse the YAML *and* the Mar
 
 Require the project with Composer:
 
-```json
-{
-    "require": {
-        "mnapoli/front-yaml": "*"
-    }
-}
+```
+composer require mnapoli/front-yaml
 ```
 
 ## Usage
@@ -80,3 +76,11 @@ interface MarkdownParser
 ```
 
 FrontYAML uses by default [Parsedown Markdown parser](http://parsedown.org/).
+
+An adapter to [League CommonMark](https://github.com/thephpleague/commonmark) is also included (you need to require the `league/commonmark` though):
+
+```php
+use \Mni\FrontYAML\Bridge\CommonMark\CommonMarkParser;
+
+$parser = new Mni\FrontYAML\Parser(null, new CommonMarkParser());
+```
