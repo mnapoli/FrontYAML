@@ -9,6 +9,7 @@
 namespace Mni\FrontYAML\Bridge\CommonMark;
 
 use League\CommonMark\CommonMarkConverter;
+use League\CommonMark\Converter;
 use Mni\FrontYAML\Markdown\MarkdownParser;
 
 /**
@@ -18,9 +19,22 @@ use Mni\FrontYAML\Markdown\MarkdownParser;
  */
 class CommonMarkParser implements MarkdownParser
 {
-    public function __construct(CommonMarkConverter $commonMarkConverter = null)
+    public function __construct($commonMarkConverter = null)
     {
-        $this->parser = $commonMarkConverter ?: new CommonMarkConverter();
+        if (null === $commonMarkConverter) {
+            $commonMarkConverter = new CommonMarkConverter();
+        }
+
+        if ((class_exists('League\CommonMark\Converter') && $commonMarkConverter instanceof Converter) || $commonMarkConverter instanceof CommonMarkConverter) {
+            $this->parser = $commonMarkConverter;
+        } else {
+            throw new \InvalidArgumentException(sprintf(
+                'CommonMarkParser::__construct can only accept some converter (%s, %s), "%s" given',
+                'League\CommonMark\Converter',
+                'League\CommonMark\CommonMarkConverter',
+                is_object($commonMarkConverter) ? get_class($commonMarkConverter) : gettype($commonMarkConverter)
+            ));
+        }
     }
 
     /**
