@@ -18,6 +18,11 @@ use Mni\FrontYAML\Markdown\MarkdownParser;
  */
 class CommonMarkParser implements MarkdownParser
 {
+    /**
+     * @var CommonMarkConverter
+     */
+    private $parser;
+
     public function __construct(CommonMarkConverter $commonMarkConverter = null)
     {
         $this->parser = $commonMarkConverter ?: new CommonMarkConverter();
