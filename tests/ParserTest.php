@@ -57,6 +57,18 @@ EOF;
         $this->assertEquals('', $document->getContent());
     }
 
+    public function testParseFrontYAMLPregMatchDelimiter()
+    {
+        $parser = new Parser(null, null, '~', '~');
+        $str = <<<EOF
+~
+~
+EOF;
+        $document = $parser->parse($str, false);
+        $this->assertNull($document->getYAML());
+        $this->assertEquals('', $document->getContent());
+    }
+
     public function testParseYAML()
     {
         $yamlParser = $this->getMockForAbstractClass('Mni\FrontYAML\YAML\YAMLParser');
