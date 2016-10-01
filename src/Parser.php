@@ -63,10 +63,15 @@ class Parser
     public function parse($str, $parseMarkdown = true)
     {
         $yaml = null;
+
+        $quote = function ($str) {
+            return preg_quote($str, "~");
+        };
+
         $regex = '~^('
-            .implode('|', array_map('preg_quote', $this->startSep)) # $matches[1] start separator
-            ."){1}[\r\n|\n]*(.*?)[\r\n|\n]+("                        # $matches[2] between separators
-            .implode('|', array_map('preg_quote', $this->endSep))   # $matches[3] end separator
+            .implode('|', array_map($quote, $this->startSep)) # $matches[1] start separator
+            ."){1}[\r\n|\n]*(.*?)[\r\n|\n]+("                       # $matches[2] between separators
+            .implode('|', array_map($quote, $this->endSep))   # $matches[3] end separator
             ."){1}[\r\n|\n]*(.*)$~s";                               # $matches[4] document content
 
         if (preg_match($regex, $str, $matches) === 1) { // There is a Front matter
