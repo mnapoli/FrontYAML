@@ -3,11 +3,12 @@
 namespace Mni\FrontYAML\Test;
 
 use Mni\FrontYAML\Parser;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers Mni\FrontYAML\Parser
  */
-class ParserTest extends \PHPUnit_Framework_TestCase
+class ParserTest extends TestCase
 {
     public function testParseEmptyString()
     {

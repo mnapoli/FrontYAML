@@ -3,8 +3,9 @@
 namespace Mni\FrontYAML\Test\Bridge\CommonMark;
 
 use Mni\FrontYAML\Bridge\CommonMark\CommonMarkParser;
+use PHPUnit\Framework\TestCase;
 
-class CommonMarkParserTest extends \PHPUnit_Framework_TestCase
+class CommonMarkParserTest extends TestCase
 {
     public function testParseWithDefaultParser()
     {
