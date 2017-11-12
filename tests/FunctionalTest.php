@@ -5,11 +5,12 @@ namespace Mni\FrontYAML\Test;
 use Mni\FrontYAML\Bridge\Parsedown\ParsedownParser;
 use Mni\FrontYAML\Bridge\Symfony\SymfonyYAMLParser;
 use Mni\FrontYAML\Parser;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @coversNothing
  */
-class FunctionalTest extends \PHPUnit_Framework_TestCase
+class FunctionalTest extends TestCase
 {
 
     public function testSimpleDocument()
