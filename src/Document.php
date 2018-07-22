@@ -40,7 +40,7 @@ class Document
      */
     public function getYAML()
     {
-        return $this->yaml;
+        return isset($this->yaml) ? $this->yaml : array();
     }
 
     /**
