@@ -21,7 +21,7 @@ class CommonMarkParserTest extends TestCase
         $markdown = '# This is a title';
         $html = "<h1>This is a title</h1>\n";
 
-        $commonMark = $this->getMock('League\CommonMark\CommonMarkConverter');
+        $commonMark = $this->createMock('League\CommonMark\CommonMarkConverter');
         $commonMark->expects($this->once())
             ->method('convertToHtml')
             ->with($markdown)
