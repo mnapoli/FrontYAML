@@ -15,7 +15,7 @@ class ParserTest extends TestCase
         $parser = new Parser();
         $document = $parser->parse('', false);
         $this->assertNull($document->getYAML());
-        $this->assertEquals('', $document->getContent());
+        $this->assertSame('', $document->getContent());
     }
 
     public function testParseNoYAML()
@@ -23,7 +23,7 @@ class ParserTest extends TestCase
         $parser = new Parser();
         $document = $parser->parse('foo', false);
         $this->assertNull($document->getYAML());
-        $this->assertEquals('foo', $document->getContent());
+        $this->assertSame('foo', $document->getContent());
     }
 
     public function testParseNoYAML2()
@@ -35,7 +35,7 @@ bar
 EOF;
         $document = $parser->parse($str, false);
         $this->assertNull($document->getYAML());
-        $this->assertEquals($str, $document->getContent());
+        $this->assertSame($str, $document->getContent());
     }
 
     public function testParseFrontYAMLDelimiter()
@@ -43,7 +43,7 @@ EOF;
         $parser = new Parser();
         $document = $parser->parse('---', false);
         $this->assertNull($document->getYAML());
-        $this->assertEquals('---', $document->getContent());
+        $this->assertSame('---', $document->getContent());
     }
 
     public function testParseFrontYAMLDelimiters()
@@ -55,7 +55,7 @@ EOF;
 EOF;
         $document = $parser->parse($str, false);
         $this->assertNull($document->getYAML());
-        $this->assertEquals('', $document->getContent());
+        $this->assertSame('', $document->getContent());
     }
 
     public function testParseFrontYAMLPregMatchDelimiter()
@@ -67,7 +67,7 @@ EOF;
 EOF;
         $document = $parser->parse($str, false);
         $this->assertNull($document->getYAML());
-        $this->assertEquals('', $document->getContent());
+        $this->assertSame('', $document->getContent());
     }
 
     public function testParseYAML()
@@ -92,8 +92,8 @@ bim
 EOF;
         $document = $parser->parse($str, false);
 
-        $this->assertEquals('bar', $document->getYAML());
-        $this->assertEquals('bim', $document->getContent());
+        $this->assertSame('bar', $document->getYAML());
+        $this->assertSame('bim', $document->getContent());
     }
 
     public function testParseYAMLMarkdown()
@@ -120,8 +120,8 @@ bim
 EOF;
         $document = $parser->parse($str);
 
-        $this->assertEquals('bar', $document->getYAML());
-        $this->assertEquals('bam', $document->getContent());
+        $this->assertSame('bar', $document->getYAML());
+        $this->assertSame('bam', $document->getContent());
     }
 
     public function testParseMarkdownNoYAML1Line()
@@ -144,7 +144,7 @@ EOF;
         $document = $parser->parse($str);
 
         $this->assertNull($document->getYAML());
-        $this->assertEquals('bam', $document->getContent());
+        $this->assertSame('bam', $document->getContent());
     }
 
     public function testParseMarkdownNoYAML2Lines()
@@ -167,7 +167,7 @@ EOF;
         $document = $parser->parse($str);
 
         $this->assertNull($document->getYAML());
-        $this->assertEquals('foo', $document->getContent());
+        $this->assertSame('foo', $document->getContent());
     }
 
     public function testMarkdownParserNotCalled()
@@ -205,7 +205,7 @@ bim
 EOF;
         $document = $parser->parse($str, false);
         $this->assertSame(array('foo' => 'bar'), $document->getYAML());
-        $this->assertEquals('bim', trim($document->getContent()));
+        $this->assertSame('bim', trim($document->getContent()));
     }
 
     public function testParseFrontYAMLArrayDelimiters()
@@ -238,8 +238,8 @@ EOF;
         $document1 = $parser->parse($str1, false);
         $document2 = $parser->parse($str2, false);
         $this->assertSame(array('foo' => 'bar'), $document1->getYAML());
-        $this->assertEquals('bim', trim($document1->getContent()));
+        $this->assertSame('bim', trim($document1->getContent()));
         $this->assertSame($document1->getYAML(), $document2->getYAML());
-        $this->assertEquals($document1->getContent(), $document2->getContent());
+        $this->assertSame($document1->getContent(), $document2->getContent());
     }
 }

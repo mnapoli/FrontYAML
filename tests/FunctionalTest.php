@@ -26,7 +26,7 @@ EOF;
         $document = $parser->parse($str);
 
         $this->assertEquals(array('foo' => 'bar'), $document->getYAML());
-        $this->assertEquals('<p>This <strong>strong</strong></p>', $document->getContent());
+        $this->assertSame('<p>This <strong>strong</strong></p>', $document->getContent());
     }
 
     public function testEscaping()
@@ -55,7 +55,7 @@ foo bar
 EOF;
         $yaml = $document->getYAML();
         $this->assertEquals($this->normalizeEOL($expected), $this->normalizeEOL($yaml['foo']));
-        $this->assertEquals('<p>Foo</p>', $document->getContent());
+        $this->assertSame('<p>Foo</p>', $document->getContent());
     }
 
     public function testMultilineMarkdown()
