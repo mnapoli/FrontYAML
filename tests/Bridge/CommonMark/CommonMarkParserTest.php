@@ -13,7 +13,7 @@ class CommonMarkParserTest extends TestCase
 
         $html = $parser->parse('# This is a title');
 
-        $this->assertEquals("<h1>This is a title</h1>\n", $html);
+        $this->assertSame("<h1>This is a title</h1>\n", $html);
     }
 
     public function testParseWithGivenParser()
@@ -29,6 +29,6 @@ class CommonMarkParserTest extends TestCase
 
         $parser = new CommonMarkParser($commonMark);
 
-        $this->assertEquals($html, $parser->parse($markdown));
+        $this->assertSame($html, $parser->parse($markdown));
     }
 }
