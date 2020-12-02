@@ -3,7 +3,7 @@ language: php
 php:
   - 7.3
   - 7.4
-  - 8.0
+  - 8.0snapshot
 
 before_script:
   - composer install --no-progress --prefer-source
