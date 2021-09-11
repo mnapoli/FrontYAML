@@ -1,22 +1,14 @@
-<?php
-/**
- * FrontYAML
- *
- * @copyright Matthieu Napoli http://mnapoli.fr
- * @license   http://www.opensource.org/licenses/mit-license.php MIT (see the LICENSE file)
- */
+<?php declare(strict_types=1);
 
 namespace Mni\FrontYAML;
 
-use Mni\FrontYAML\Bridge\Parsedown\ParsedownParser;
+use Mni\FrontYAML\Bridge\CommonMark\CommonMarkParser;
 use Mni\FrontYAML\Bridge\Symfony\SymfonyYAMLParser;
 use Mni\FrontYAML\Markdown\MarkdownParser;
 use Mni\FrontYAML\YAML\YAMLParser;
 
 /**
  * YAML Front matter parser
- *
- * @author Matthieu Napoli <matthieu@mnapoli.fr>
  */
 class Parser
 {
@@ -30,41 +22,36 @@ class Parser
      */
     private $markdownParser;
 
-    /**
-     * @var array
-     */
-    private $startSep;
+    private array $startSep;
+
+    private array $endSep;
 
     /**
-     * @var array
+     * @param string|string[] $startSep
+     * @param string|string[] $endSep
      */
-    private $endSep;
-
     public function __construct(
         YAMLParser $yamlParser = null,
         MarkdownParser $markdownParser = null,
         $startSep = '---',
         $endSep = '---'
     ) {
-        $this->yamlParser = $yamlParser ?: new SymfonyYAMLParser();
-        $this->markdownParser = $markdownParser ?: new ParsedownParser();
-        $this->startSep = array_filter((array) $startSep, 'is_string') ?: array('---');
-        $this->endSep = array_filter((array) $endSep, 'is_string') ?: array('---');
+        $this->yamlParser = $yamlParser ?: new SymfonyYAMLParser;
+        $this->markdownParser = $markdownParser ?: new CommonMarkParser;
+        $this->startSep = array_filter((array) $startSep, 'is_string') ?: ['---'];
+        $this->endSep = array_filter((array) $endSep, 'is_string') ?: ['---'];
     }
 
     /**
      * Parse a string containing the YAML front matter and the markdown.
      *
-     * @param string $str
-     * @param bool   $parseMarkdown Should the Markdown be turned into HTML?
-     *
-     * @return Document
+     * @param bool $parseMarkdown Should the Markdown be turned into HTML?
      */
-    public function parse($str, $parseMarkdown = true)
+    public function parse(string $str, bool $parseMarkdown = true): Document
     {
         $yaml = null;
 
-        $quote = function ($str) {
+        $quote = static function ($str) {
             return preg_quote($str, "~");
         };
 

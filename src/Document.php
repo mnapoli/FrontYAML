@@ -1,35 +1,19 @@
-<?php
-/**
- * FrontYAML
- *
- * @copyright Matthieu Napoli http://mnapoli.fr
- * @license   http://www.opensource.org/licenses/mit-license.php MIT (see the LICENSE file)
- */
+<?php declare(strict_types=1);
 
 namespace Mni\FrontYAML;
 
-/**
- * Document.
- *
- * @author Matthieu Napoli <matthieu@mnapoli.fr>
- */
 class Document
 {
-    /**
-     * @var mixed
-     */
+    /** @var mixed */
     private $yaml;
 
-    /**
-     * @var string
-     */
-    private $content;
+    private string $content;
 
     /**
-     * @param mixed  $yaml    YAML content.
+     * @param mixed $yaml YAML content.
      * @param string $content Content of the document.
      */
-    public function __construct($yaml, $content)
+    public function __construct($yaml, string $content)
     {
         $this->yaml = $yaml;
         $this->content = $content;
@@ -46,7 +30,7 @@ class Document
     /**
      * @return string Content of the document.
      */
-    public function getContent()
+    public function getContent(): string
     {
         return $this->content;
     }

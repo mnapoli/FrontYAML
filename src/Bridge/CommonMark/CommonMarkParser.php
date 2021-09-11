@@ -1,10 +1,4 @@
-<?php
-/**
- * FrontYAML
- *
- * @copyright Matthieu Napoli http://mnapoli.fr
- * @license   http://www.opensource.org/licenses/mit-license.php MIT (see the LICENSE file)
- */
+<?php declare(strict_types=1);
 
 namespace Mni\FrontYAML\Bridge\CommonMark;
 
@@ -13,26 +7,18 @@ use Mni\FrontYAML\Markdown\MarkdownParser;
 
 /**
  * Bridge to the League CommonMark parser
- *
- * @author Matthieu Napoli <matthieu@mnapoli.fr>
  */
 class CommonMarkParser implements MarkdownParser
 {
-    /**
-     * @var CommonMarkConverter
-     */
-    private $parser;
+    private CommonMarkConverter $parser;
 
     public function __construct(CommonMarkConverter $commonMarkConverter = null)
     {
-        $this->parser = $commonMarkConverter ?: new CommonMarkConverter();
+        $this->parser = $commonMarkConverter ?: new CommonMarkConverter;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function parse($markdown)
+    public function parse(string $markdown): string
     {
-        return $this->parser->convertToHtml($markdown);
+        return $this->parser->convertToHtml($markdown)->getContent();
     }
 }
