@@ -1,13 +1,12 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Mni\FrontYAML\Test;
 
 use Mni\FrontYAML\Parser;
 use PHPUnit\Framework\TestCase;
+use Mni\FrontYAML\YAML\YAMLParser;
+use Mni\FrontYAML\Markdown\MarkdownParser;
 
-/**
- * @covers Mni\FrontYAML\Parser
- */
 class ParserTest extends TestCase
 {
     public function testParseEmptyString()
@@ -72,13 +71,13 @@ EOF;
 
     public function testParseYAML()
     {
-        $yamlParser = $this->getMockForAbstractClass('Mni\FrontYAML\YAML\YAMLParser');
+        $yamlParser = $this->getMockForAbstractClass(YAMLParser::class);
         $yamlParser->expects($this->once())
             ->method('parse')
             ->with('foo')
-            ->will($this->returnValue('bar'));
+            ->willReturn('bar');
 
-        $markdownParser = $this->getMockForAbstractClass('Mni\FrontYAML\Markdown\MarkdownParser');
+        $markdownParser = $this->getMockForAbstractClass(MarkdownParser::class);
         $markdownParser->expects($this->never())
             ->method('parse');
 
@@ -98,17 +97,17 @@ EOF;
 
     public function testParseYAMLMarkdown()
     {
-        $yamlParser = $this->getMockForAbstractClass('Mni\FrontYAML\YAML\YAMLParser');
+        $yamlParser = $this->getMockForAbstractClass(YAMLParser::class);
         $yamlParser->expects($this->once())
             ->method('parse')
             ->with('foo')
-            ->will($this->returnValue('bar'));
+            ->willReturn('bar');
 
-        $markdownParser = $this->getMockForAbstractClass('Mni\FrontYAML\Markdown\MarkdownParser');
+        $markdownParser = $this->getMockForAbstractClass(MarkdownParser::class);
         $markdownParser->expects($this->once())
             ->method('parse')
             ->with('bim')
-            ->will($this->returnValue('bam'));
+            ->willReturn('bam');
 
         $parser = new Parser($yamlParser, $markdownParser);
 
@@ -126,15 +125,15 @@ EOF;
 
     public function testParseMarkdownNoYAML1Line()
     {
-        $yamlParser = $this->getMockForAbstractClass('Mni\FrontYAML\YAML\YAMLParser');
+        $yamlParser = $this->getMockForAbstractClass(YAMLParser::class);
         $yamlParser->expects($this->never())
             ->method('parse');
 
-        $markdownParser = $this->getMockForAbstractClass('Mni\FrontYAML\Markdown\MarkdownParser');
+        $markdownParser = $this->getMockForAbstractClass(MarkdownParser::class);
         $markdownParser->expects($this->once())
             ->method('parse')
             ->with('bim')
-            ->will($this->returnValue('bam'));
+            ->willReturn('bam');
 
         $parser = new Parser($yamlParser, $markdownParser);
 
@@ -149,14 +148,14 @@ EOF;
 
     public function testParseMarkdownNoYAML2Lines()
     {
-        $yamlParser = $this->getMockForAbstractClass('Mni\FrontYAML\YAML\YAMLParser');
+        $yamlParser = $this->getMockForAbstractClass(YAMLParser::class);
         $yamlParser->expects($this->never())
             ->method('parse');
 
-        $markdownParser = $this->getMockForAbstractClass('Mni\FrontYAML\Markdown\MarkdownParser');
+        $markdownParser = $this->getMockForAbstractClass(MarkdownParser::class);
         $markdownParser->expects($this->once())
             ->method('parse')
-            ->will($this->returnValue('foo'));
+            ->willReturn('foo');
 
         $parser = new Parser($yamlParser, $markdownParser);
 
@@ -172,9 +171,9 @@ EOF;
 
     public function testMarkdownParserNotCalled()
     {
-        $yamlParser = $this->getMockForAbstractClass('Mni\FrontYAML\YAML\YAMLParser');
+        $yamlParser = $this->getMockForAbstractClass(YAMLParser::class);
 
-        $markdownParser = $this->getMockForAbstractClass('Mni\FrontYAML\Markdown\MarkdownParser');
+        $markdownParser = $this->getMockForAbstractClass(MarkdownParser::class);
         $markdownParser->expects($this->never())
             ->method('parse');
 
@@ -186,13 +185,13 @@ EOF;
     {
         $start = '*_-\)``.|.``(/-_*';
         $end = '--({@}{._.}{@})--';
-        $yamlParser = $this->getMockForAbstractClass('Mni\FrontYAML\YAML\YAMLParser');
+        $yamlParser = $this->getMockForAbstractClass(YAMLParser::class);
         $yamlParser->expects($this->once())
             ->method('parse')
             ->with('foo: bar')
-            ->will($this->returnValue(array('foo' => 'bar')));
+            ->willReturn(['foo' => 'bar']);
 
-        $markdownParser = $this->getMockForAbstractClass('Mni\FrontYAML\Markdown\MarkdownParser');
+        $markdownParser = $this->getMockForAbstractClass(MarkdownParser::class);
         $markdownParser->expects($this->never())
             ->method('parse');
 
@@ -210,15 +209,15 @@ EOF;
 
     public function testParseFrontYAMLArrayDelimiters()
     {
-        $start = array('---','<!--');
-        $end = array('---','-->');
-        $yamlParser = $this->getMockForAbstractClass('Mni\FrontYAML\YAML\YAMLParser');
+        $start = ['---','<!--'];
+        $end = ['---','-->'];
+        $yamlParser = $this->getMockForAbstractClass(YAMLParser::class);
         $yamlParser->expects($this->exactly(2))
             ->method('parse')
             ->with('foo: bar')
-            ->will($this->returnValue(array('foo' => 'bar')));
+            ->willReturn(['foo' => 'bar']);
 
-        $markdownParser = $this->getMockForAbstractClass('Mni\FrontYAML\Markdown\MarkdownParser');
+        $markdownParser = $this->getMockForAbstractClass(MarkdownParser::class);
         $markdownParser->expects($this->never())
             ->method('parse');
 

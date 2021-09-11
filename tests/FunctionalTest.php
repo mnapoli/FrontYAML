@@ -1,21 +1,15 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Mni\FrontYAML\Test;
 
-use Mni\FrontYAML\Bridge\Parsedown\ParsedownParser;
-use Mni\FrontYAML\Bridge\Symfony\SymfonyYAMLParser;
 use Mni\FrontYAML\Parser;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversNothing
- */
 class FunctionalTest extends TestCase
 {
-
     public function testSimpleDocument()
     {
-        $parser = new Parser(new SymfonyYAMLParser(), new ParsedownParser());
+        $parser = new Parser;
 
         $str = <<<EOF
 ---
@@ -26,12 +20,12 @@ EOF;
         $document = $parser->parse($str);
 
         $this->assertEquals(array('foo' => 'bar'), $document->getYAML());
-        $this->assertSame('<p>This <strong>strong</strong></p>', $document->getContent());
+        $this->assertSame("<p>This <strong>strong</strong></p>\n", $document->getContent());
     }
 
     public function testEscaping()
     {
-        $parser = new Parser(new SymfonyYAMLParser(), new ParsedownParser());
+        $parser = new Parser;
 
         $str = <<<EOF
 ---
@@ -55,12 +49,12 @@ foo bar
 EOF;
         $yaml = $document->getYAML();
         $this->assertEquals($this->normalizeEOL($expected), $this->normalizeEOL($yaml['foo']));
-        $this->assertSame('<p>Foo</p>', $document->getContent());
+        $this->assertSame("<p>Foo</p>\n", $document->getContent());
     }
 
     public function testMultilineMarkdown()
     {
-        $parser = new Parser(new SymfonyYAMLParser(), new ParsedownParser());
+        $parser = new Parser;
         $str = <<<EOF
 Foo
 
@@ -70,13 +64,14 @@ EOF;
         $expected = <<<EOF
 <p>Foo</p>
 <p>Bar</p>
+
 EOF;
         $this->assertEquals($this->normalizeEOL($expected), $this->normalizeEOL($document->getContent()));
     }
 
     public function testCrossOsMultiline()
     {
-        $parser = new Parser(new SymfonyYAMLParser(), new ParsedownParser());
+        $parser = new Parser;
         $content = <<<EOF
 ---
 lorem: ipsum
@@ -112,7 +107,7 @@ EOF;
 
     public function testNonGreedySeparator()
     {
-        $parser = new Parser(new SymfonyYAMLParser(), new ParsedownParser());
+        $parser = new Parser;
         $content = <<<EOF
 ---
 lorem: ipsum

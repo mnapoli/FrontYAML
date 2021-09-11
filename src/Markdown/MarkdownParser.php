@@ -1,17 +1,9 @@
-<?php
-/**
- * FrontYAML
- *
- * @copyright Matthieu Napoli http://mnapoli.fr
- * @license   http://www.opensource.org/licenses/mit-license.php MIT (see the LICENSE file)
- */
+<?php declare(strict_types=1);
 
 namespace Mni\FrontYAML\Markdown;
 
 /**
  * Interface of a Markdown parser
- *
- * @author Matthieu Napoli <matthieu@mnapoli.fr>
  */
 interface MarkdownParser
 {
@@ -22,5 +14,5 @@ interface MarkdownParser
      *
      * @return string HTML document.
      */
-    public function parse($markdown);
+    public function parse(string $markdown): string;
 }

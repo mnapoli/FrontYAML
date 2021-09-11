@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Mni\FrontYAML\Test\Bridge\CommonMark;
 
@@ -14,21 +14,5 @@ class CommonMarkParserTest extends TestCase
         $html = $parser->parse('# This is a title');
 
         $this->assertSame("<h1>This is a title</h1>\n", $html);
-    }
-
-    public function testParseWithGivenParser()
-    {
-        $markdown = '# This is a title';
-        $html = "<h1>This is a title</h1>\n";
-
-        $commonMark = $this->createMock('League\CommonMark\CommonMarkConverter');
-        $commonMark->expects($this->once())
-            ->method('convertToHtml')
-            ->with($markdown)
-            ->willReturn($html);
-
-        $parser = new CommonMarkParser($commonMark);
-
-        $this->assertSame($html, $parser->parse($markdown));
     }
 }

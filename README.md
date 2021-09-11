@@ -2,7 +2,6 @@
 
 An implementation of YAML Front matter for PHP. Can parse the YAML *and* the Markdown.
 
-[![Build Status](https://travis-ci.org/mnapoli/FrontYAML.png?branch=master)](https://travis-ci.org/mnapoli/FrontYAML)
 [![Total Downloads](https://poser.pugx.org/mnapoli/front-yaml/downloads.svg)](https://packagist.org/packages/mnapoli/front-yaml)
 
 ## Installation
@@ -16,7 +15,7 @@ composer require mnapoli/front-yaml
 ## Usage
 
 ```php
-$parser = new Mni\FrontYAML\Parser();
+$parser = new Mni\FrontYAML\Parser;
 
 $document = $parser->parse($str);
 
@@ -75,12 +74,4 @@ interface MarkdownParser
 }
 ```
 
-FrontYAML uses by default [Parsedown Markdown parser](http://parsedown.org/).
-
-An adapter to [League CommonMark](https://github.com/thephpleague/commonmark) is also included (you need to require the `league/commonmark` though):
-
-```php
-use \Mni\FrontYAML\Bridge\CommonMark\CommonMarkParser;
-
-$parser = new Mni\FrontYAML\Parser(null, new CommonMarkParser());
-```
+FrontYAML uses by default the [League CommonMark parser](https://github.com/thephpleague/commonmark).

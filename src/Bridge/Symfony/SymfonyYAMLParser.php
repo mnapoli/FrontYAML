@@ -1,10 +1,4 @@
-<?php
-/**
- * FrontYAML
- *
- * @copyright Matthieu Napoli http://mnapoli.fr
- * @license   http://www.opensource.org/licenses/mit-license.php MIT (see the LICENSE file)
- */
+<?php declare(strict_types=1);
 
 namespace Mni\FrontYAML\Bridge\Symfony;
 
@@ -13,25 +7,17 @@ use Symfony\Component\Yaml\Parser;
 
 /**
  * Bridge to the Symfony YAML parser
- *
- * @author Matthieu Napoli <matthieu@mnapoli.fr>
  */
 class SymfonyYAMLParser implements YAMLParser
 {
-    /**
-     * @var Parser
-     */
-    private $parser;
+    private Parser $parser;
 
     public function __construct()
     {
-        $this->parser = new Parser();
+        $this->parser = new Parser;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function parse($yaml)
+    public function parse(string $yaml)
     {
         return $this->parser->parse($yaml);
     }
