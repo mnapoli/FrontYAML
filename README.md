@@ -1,6 +1,6 @@
 # FrontYAML
 
-An implementation of YAML Front matter for PHP. Can parse the YAML *and* the Markdown.
+An implementation of YAML Front matter for PHP. It can parse both YAML **and** Markdown.
 
 [![Total Downloads](https://poser.pugx.org/mnapoli/front-yaml/downloads.svg)](https://packagist.org/packages/mnapoli/front-yaml)
 
