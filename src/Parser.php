@@ -22,8 +22,12 @@ class Parser
      */
     private MarkdownParser $markdownParser;
 
+    /**
+     * @var string[]
+     */
     private array $startSep;
 
+    /** @var string[] */
     private array $endSep;
 
     /**
