@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 class FunctionalTest extends TestCase
 {
-    public function testSimpleDocument()
+    public function testSimpleDocument(): void
     {
         $parser = new Parser;
 
@@ -23,7 +23,7 @@ EOF;
         $this->assertSame("<p>This <strong>strong</strong></p>\n", $document->getContent());
     }
 
-    public function testEscaping()
+    public function testEscaping(): void
     {
         $parser = new Parser;
 
@@ -52,7 +52,7 @@ EOF;
         $this->assertSame("<p>Foo</p>\n", $document->getContent());
     }
 
-    public function testMultilineMarkdown()
+    public function testMultilineMarkdown(): void
     {
         $parser = new Parser;
         $str = <<<EOF
@@ -69,7 +69,7 @@ EOF;
         $this->assertEquals($this->normalizeEOL($expected), $this->normalizeEOL($document->getContent()));
     }
 
-    public function testCrossOsMultiline()
+    public function testCrossOsMultiline(): void
     {
         $parser = new Parser;
         $content = <<<EOF
@@ -105,7 +105,7 @@ EOF;
         $this->assertSame($this->normalizeEOL($expectedHtml), $this->normalizeEOL($dosYaml['multiline']));
     }
 
-    public function testNonGreedySeparator()
+    public function testNonGreedySeparator(): void
     {
         $parser = new Parser;
         $content = <<<EOF
@@ -120,7 +120,7 @@ EOF;
         $this->assertSame(array('lorem' => 'ipsum'), $document->getYAML());
     }
 
-    private function normalizeEOL($str)
+    private function normalizeEOL(string $str): string
     {
         return str_replace("\r", '', $str);
     }
