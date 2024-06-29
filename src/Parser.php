@@ -27,12 +27,14 @@ class Parser
     private array $endSep;
 
     /**
+     * @param ?YAMLParser $yamlParser Set a custom YAMLParser instance. Fallback is SymfonyYAMLParser if null.
+     * @param ?MarkdownParser $markdownParser Set a custom MarkdownParser instance. Fallback is CommonMarkParser if null.
      * @param string|string[] $startSep
      * @param string|string[] $endSep
      */
     public function __construct(
-        YAMLParser $yamlParser = null,
-        MarkdownParser $markdownParser = null,
+        ?YAMLParser $yamlParser = null,
+        ?MarkdownParser $markdownParser = null,
         $startSep = '---',
         $endSep = '---'
     ) {
