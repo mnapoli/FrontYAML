@@ -15,12 +15,12 @@ class Parser
     /**
      * @var YAMLParser
      */
-    private $yamlParser;
+    private YAMLParser $yamlParser;
 
     /**
      * @var MarkdownParser
      */
-    private $markdownParser;
+    private MarkdownParser $markdownParser;
 
     private array $startSep;
 
