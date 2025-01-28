@@ -31,8 +31,8 @@ class Parser
      * @param string|string[] $endSep
      */
     public function __construct(
-        YAMLParser $yamlParser = null,
-        MarkdownParser $markdownParser = null,
+        ?YAMLParser $yamlParser = null,
+        ?MarkdownParser $markdownParser = null,
         $startSep = '---',
         $endSep = '---'
     ) {
