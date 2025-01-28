@@ -27,8 +27,10 @@ class Parser
     private array $endSep;
 
     /**
-     * @param string|string[] $startSep
-     * @param string|string[] $endSep
+     * @param YAMLParser $yamlParser (optional)
+     * @param MarkdownParser $markdownParser (optional)
+     * @param string|string[] $startSep (optional)
+     * @param string|string[] $endSep (optional)
      */
     public function __construct(
         ?YAMLParser $yamlParser = null,
