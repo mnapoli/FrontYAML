@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class CommonMarkParserTest extends TestCase
 {
-    public function testParseWithDefaultParser()
+    public function testParseWithDefaultParser(): void
     {
         $parser = new CommonMarkParser();
 
@@ -19,7 +19,7 @@ class CommonMarkParserTest extends TestCase
         $this->assertSame("<h1>This is a title</h1>\n", $html);
     }
 
-    public function testParseWithCustomParser()
+    public function testParseWithCustomParser(): void
     {
         $environment = new Environment;
         $environment->addExtension(new CommonMarkCoreExtension);
