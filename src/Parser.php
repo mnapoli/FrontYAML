@@ -12,15 +12,9 @@ use Mni\FrontYAML\YAML\YAMLParser;
  */
 class Parser
 {
-    /**
-     * @var YAMLParser
-     */
-    private $yamlParser;
+    private YAMLParser|null $yamlParser;
 
-    /**
-     * @var MarkdownParser
-     */
-    private $markdownParser;
+    private MarkdownParser|null $markdownParser;
 
     private array $startSep;
 
@@ -31,8 +25,8 @@ class Parser
      * @param string|string[] $endSep
      */
     public function __construct(
-        ?YAMLParser $yamlParser = null,
-        ?MarkdownParser $markdownParser = null,
+        YAMLParser|null $yamlParser = null,
+        MarkdownParser|null $markdownParser = null,
         $startSep = '---',
         $endSep = '---'
     ) {

@@ -17,7 +17,7 @@ class SymfonyYAMLParser implements YAMLParser
         $this->parser = new Parser;
     }
 
-    public function parse(string $yaml)
+    public function parse(string $yaml): mixed
     {
         return $this->parser->parse($yaml);
     }

@@ -9,8 +9,6 @@ interface YAMLParser
 {
     /**
      * Parses a YAML string.
-     *
-     * @return mixed
      */
-    public function parse(string $yaml);
+    public function parse(string $yaml): mixed;
 }
