@@ -3,7 +3,7 @@
 namespace Mni\FrontYAML\Bridge\CommonMark;
 
 use League\CommonMark\CommonMarkConverter;
-use League\CommonMark\MarkdownConverterInterface;
+use League\CommonMark\ConverterInterface;
 use Mni\FrontYAML\Markdown\MarkdownParser;
 
 /**
@@ -11,15 +11,15 @@ use Mni\FrontYAML\Markdown\MarkdownParser;
  */
 class CommonMarkParser implements MarkdownParser
 {
-    private MarkdownConverterInterface $parser;
+    private ConverterInterface|null $parser;
 
-    public function __construct(MarkdownConverterInterface $commonMarkConverter = null)
+    public function __construct(ConverterInterface|null $commonMarkConverter = null)
     {
         $this->parser = $commonMarkConverter ?: new CommonMarkConverter;
     }
 
     public function parse(string $markdown): string
     {
-        return $this->parser->convertToHtml($markdown)->getContent();
+        return $this->parser->convert($markdown)->getContent();
     }
 }
