@@ -12,9 +12,9 @@ use Mni\FrontYAML\YAML\YAMLParser;
  */
 class Parser
 {
-    private YAMLParser|null $yamlParser;
+    private YAMLParser $yamlParser;
 
-    private MarkdownParser|null $markdownParser;
+    private MarkdownParser $markdownParser;
 
     private array $startSep;
 
