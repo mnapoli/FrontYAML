@@ -11,7 +11,7 @@ use Mni\FrontYAML\Markdown\MarkdownParser;
  */
 class CommonMarkParser implements MarkdownParser
 {
-    private ConverterInterface|null $parser;
+    private ConverterInterface $parser;
 
     public function __construct(ConverterInterface|null $commonMarkConverter = null)
     {
