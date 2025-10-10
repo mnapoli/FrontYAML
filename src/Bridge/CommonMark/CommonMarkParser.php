@@ -1,25 +1,27 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Mni\FrontYAML\Bridge\CommonMark;
 
 use League\CommonMark\CommonMarkConverter;
-use League\CommonMark\ConverterInterface;
+use League\CommonMark\MarkdownConverterInterface;
 use Mni\FrontYAML\Markdown\MarkdownParser;
 
 /**
  * Bridge to the League CommonMark parser
  */
-class CommonMarkParser implements MarkdownParser
+final class CommonMarkParser implements MarkdownParser
 {
-    private ConverterInterface $parser;
+    private MarkdownConverterInterface $parser;
 
-    public function __construct(ConverterInterface|null $commonMarkConverter = null)
+    public function __construct(MarkdownConverterInterface|null $commonMarkConverter = null)
     {
-        $this->parser = $commonMarkConverter ?: new CommonMarkConverter;
+        $this->parser = $commonMarkConverter ?: new CommonMarkConverter();
     }
 
     public function parse(string $markdown): string
     {
-        return $this->parser->convert($markdown)->getContent();
+        return $this->parser?->convertToHtml($markdown)?->getContent() ?? '';
     }
 }
