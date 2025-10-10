@@ -2,7 +2,7 @@
 
 namespace Mni\FrontYAML;
 
-class Document
+final class Document
 {
     private mixed $yaml;
 

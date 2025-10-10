@@ -8,13 +8,13 @@ use Symfony\Component\Yaml\Parser;
 /**
  * Bridge to the Symfony YAML parser
  */
-class SymfonyYAMLParser implements YAMLParser
+final class SymfonyYAMLParser implements YAMLParser
 {
     private Parser $parser;
 
     public function __construct()
     {
-        $this->parser = new Parser;
+        $this->parser = new Parser();
     }
 
     public function parse(string $yaml): mixed
