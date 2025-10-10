@@ -7,39 +7,37 @@ use Mni\FrontYAML\Bridge\Symfony\SymfonyYAMLParser;
 use Mni\FrontYAML\Markdown\MarkdownParser;
 use Mni\FrontYAML\YAML\YAMLParser;
 
+use function array_filter;
+use function array_map;
+use function implode;
+use function ltrim;
+use function preg_match;
+use function preg_quote;
+use function trim;
+
 /**
  * YAML Front matter parser
  */
-class Parser
+final class Parser
 {
-    /**
-     * @var YAMLParser
-     */
-    private $yamlParser;
+    private YAMLParser $yamlParser;
 
-    /**
-     * @var MarkdownParser
-     */
-    private $markdownParser;
+    private MarkdownParser $markdownParser;
 
     private array $startSep;
 
     private array $endSep;
 
-    /**
-     * @param string|string[] $startSep
-     * @param string|string[] $endSep
-     */
     public function __construct(
-        ?YAMLParser $yamlParser = null,
-        ?MarkdownParser $markdownParser = null,
-        $startSep = '---',
-        $endSep = '---'
+        YAMLParser|null $yamlParser = null,
+        MarkdownParser|null $markdownParser = null,
+        string|array $startSep = '---',
+        string|array $endSep = '---'
     ) {
-        $this->yamlParser = $yamlParser ?: new SymfonyYAMLParser;
-        $this->markdownParser = $markdownParser ?: new CommonMarkParser;
-        $this->startSep = array_filter((array) $startSep, 'is_string') ?: ['---'];
-        $this->endSep = array_filter((array) $endSep, 'is_string') ?: ['---'];
+        $this->yamlParser     = $yamlParser ?? new SymfonyYAMLParser();
+        $this->markdownParser = $markdownParser ?? new CommonMarkParser();
+        $this->startSep       = array_filter((array) $startSep, 'is_string') ?: ['---'];
+        $this->endSep         = array_filter((array) $endSep, 'is_string') ?: ['---'];
     }
 
     /**
@@ -51,7 +49,7 @@ class Parser
     {
         $yaml = null;
 
-        $quote = static function ($str) {
+        $quote = static function (string $str): string {
             return preg_quote($str, "~");
         };
 

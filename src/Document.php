@@ -2,10 +2,9 @@
 
 namespace Mni\FrontYAML;
 
-class Document
+final class Document
 {
-    /** @var mixed */
-    private $yaml;
+    private mixed $yaml;
 
     private string $content;
 
@@ -13,7 +12,7 @@ class Document
      * @param mixed $yaml YAML content.
      * @param string $content Content of the document.
      */
-    public function __construct($yaml, string $content)
+    public function __construct(mixed $yaml, string $content)
     {
         $this->yaml = $yaml;
         $this->content = $content;
@@ -22,7 +21,7 @@ class Document
     /**
      * @return mixed YAML content.
      */
-    public function getYAML()
+    public function getYAML(): mixed
     {
         return $this->yaml;
     }

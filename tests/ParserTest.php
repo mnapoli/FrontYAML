@@ -2,14 +2,16 @@
 
 namespace Mni\FrontYAML\Test;
 
-use Mni\FrontYAML\Parser;
-use PHPUnit\Framework\TestCase;
-use Mni\FrontYAML\YAML\YAMLParser;
 use Mni\FrontYAML\Markdown\MarkdownParser;
+use Mni\FrontYAML\Parser;
+use Mni\FrontYAML\YAML\YAMLParser;
+use PHPUnit\Framework\TestCase;
 
-class ParserTest extends TestCase
+use function trim;
+
+final class ParserTest extends TestCase
 {
-    public function testParseEmptyString()
+    public function testParseEmptyString(): void
     {
         $parser = new Parser();
         $document = $parser->parse('', false);
@@ -17,7 +19,7 @@ class ParserTest extends TestCase
         $this->assertSame('', $document->getContent());
     }
 
-    public function testParseNoYAML()
+    public function testParseNoYAML(): void
     {
         $parser = new Parser();
         $document = $parser->parse('foo', false);
@@ -25,7 +27,7 @@ class ParserTest extends TestCase
         $this->assertSame('foo', $document->getContent());
     }
 
-    public function testParseNoYAML2()
+    public function testParseNoYAML2(): void
     {
         $parser = new Parser();
         $str = <<<EOF
@@ -37,7 +39,7 @@ EOF;
         $this->assertSame($str, $document->getContent());
     }
 
-    public function testParseFrontYAMLDelimiter()
+    public function testParseFrontYAMLDelimiter(): void
     {
         $parser = new Parser();
         $document = $parser->parse('---', false);
@@ -45,7 +47,7 @@ EOF;
         $this->assertSame('---', $document->getContent());
     }
 
-    public function testParseFrontYAMLDelimiters()
+    public function testParseFrontYAMLDelimiters(): void
     {
         $parser = new Parser();
         $str = <<<EOF
@@ -57,7 +59,7 @@ EOF;
         $this->assertSame('', $document->getContent());
     }
 
-    public function testParseFrontYAMLPregMatchDelimiter()
+    public function testParseFrontYAMLPregMatchDelimiter(): void
     {
         $parser = new Parser(null, null, '~', '~');
         $str = <<<EOF
@@ -69,15 +71,15 @@ EOF;
         $this->assertSame('', $document->getContent());
     }
 
-    public function testParseYAML()
+    public function testParseYAML(): void
     {
-        $yamlParser = $this->getMockForAbstractClass(YAMLParser::class);
+        $yamlParser = $this->createMock(YAMLParser::class);
         $yamlParser->expects($this->once())
             ->method('parse')
             ->with('foo')
             ->willReturn('bar');
 
-        $markdownParser = $this->getMockForAbstractClass(MarkdownParser::class);
+        $markdownParser = $this->createMock(MarkdownParser::class);
         $markdownParser->expects($this->never())
             ->method('parse');
 
@@ -95,15 +97,15 @@ EOF;
         $this->assertSame('bim', $document->getContent());
     }
 
-    public function testParseYAMLMarkdown()
+    public function testParseYAMLMarkdown(): void
     {
-        $yamlParser = $this->getMockForAbstractClass(YAMLParser::class);
+        $yamlParser = $this->createMock(YAMLParser::class);
         $yamlParser->expects($this->once())
             ->method('parse')
             ->with('foo')
             ->willReturn('bar');
 
-        $markdownParser = $this->getMockForAbstractClass(MarkdownParser::class);
+        $markdownParser = $this->createMock(MarkdownParser::class);
         $markdownParser->expects($this->once())
             ->method('parse')
             ->with('bim')
@@ -123,13 +125,13 @@ EOF;
         $this->assertSame('bam', $document->getContent());
     }
 
-    public function testParseMarkdownNoYAML1Line()
+    public function testParseMarkdownNoYAML1Line(): void
     {
-        $yamlParser = $this->getMockForAbstractClass(YAMLParser::class);
+        $yamlParser = $this->createMock(YAMLParser::class);
         $yamlParser->expects($this->never())
             ->method('parse');
 
-        $markdownParser = $this->getMockForAbstractClass(MarkdownParser::class);
+        $markdownParser = $this->createMock(MarkdownParser::class);
         $markdownParser->expects($this->once())
             ->method('parse')
             ->with('bim')
@@ -146,13 +148,13 @@ EOF;
         $this->assertSame('bam', $document->getContent());
     }
 
-    public function testParseMarkdownNoYAML2Lines()
+    public function testParseMarkdownNoYAML2Lines(): void
     {
-        $yamlParser = $this->getMockForAbstractClass(YAMLParser::class);
+        $yamlParser = $this->createMock(YAMLParser::class);
         $yamlParser->expects($this->never())
             ->method('parse');
 
-        $markdownParser = $this->getMockForAbstractClass(MarkdownParser::class);
+        $markdownParser = $this->createMock(MarkdownParser::class);
         $markdownParser->expects($this->once())
             ->method('parse')
             ->willReturn('foo');
@@ -169,11 +171,11 @@ EOF;
         $this->assertSame('foo', $document->getContent());
     }
 
-    public function testMarkdownParserNotCalled()
+    public function testMarkdownParserNotCalled(): void
     {
-        $yamlParser = $this->getMockForAbstractClass(YAMLParser::class);
+        $yamlParser = $this->createMock(YAMLParser::class);
 
-        $markdownParser = $this->getMockForAbstractClass(MarkdownParser::class);
+        $markdownParser = $this->createMock(MarkdownParser::class);
         $markdownParser->expects($this->never())
             ->method('parse');
 
@@ -181,17 +183,17 @@ EOF;
         $parser->parse('foo', false);
     }
 
-    public function testParseFrontYAMLEdgeCaseDelimiters()
+    public function testParseFrontYAMLEdgeCaseDelimiters(): void
     {
         $start = '*_-\)``.|.``(/-_*';
         $end = '--({@}{._.}{@})--';
-        $yamlParser = $this->getMockForAbstractClass(YAMLParser::class);
+        $yamlParser = $this->createMock(YAMLParser::class);
         $yamlParser->expects($this->once())
             ->method('parse')
             ->with('foo: bar')
             ->willReturn(['foo' => 'bar']);
 
-        $markdownParser = $this->getMockForAbstractClass(MarkdownParser::class);
+        $markdownParser = $this->createMock(MarkdownParser::class);
         $markdownParser->expects($this->never())
             ->method('parse');
 
@@ -203,21 +205,21 @@ foo: bar
 bim
 EOF;
         $document = $parser->parse($str, false);
-        $this->assertSame(array('foo' => 'bar'), $document->getYAML());
+        $this->assertSame(['foo' => 'bar'], $document->getYAML());
         $this->assertSame('bim', trim($document->getContent()));
     }
 
-    public function testParseFrontYAMLArrayDelimiters()
+    public function testParseFrontYAMLArrayDelimiters(): void
     {
         $start = ['---','<!--'];
         $end = ['---','-->'];
-        $yamlParser = $this->getMockForAbstractClass(YAMLParser::class);
+        $yamlParser = $this->createMock(YAMLParser::class);
         $yamlParser->expects($this->exactly(2))
             ->method('parse')
             ->with('foo: bar')
             ->willReturn(['foo' => 'bar']);
 
-        $markdownParser = $this->getMockForAbstractClass(MarkdownParser::class);
+        $markdownParser = $this->createMock(MarkdownParser::class);
         $markdownParser->expects($this->never())
             ->method('parse');
 
@@ -236,7 +238,7 @@ bim
 EOF;
         $document1 = $parser->parse($str1, false);
         $document2 = $parser->parse($str2, false);
-        $this->assertSame(array('foo' => 'bar'), $document1->getYAML());
+        $this->assertSame(['foo' => 'bar'], $document1->getYAML());
         $this->assertSame('bim', trim($document1->getContent()));
         $this->assertSame($document1->getYAML(), $document2->getYAML());
         $this->assertSame($document1->getContent(), $document2->getContent());

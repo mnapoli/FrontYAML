@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Mni\FrontYAML\Bridge\CommonMark;
 
@@ -9,17 +11,17 @@ use Mni\FrontYAML\Markdown\MarkdownParser;
 /**
  * Bridge to the League CommonMark parser
  */
-class CommonMarkParser implements MarkdownParser
+final class CommonMarkParser implements MarkdownParser
 {
     private MarkdownConverterInterface $parser;
 
-    public function __construct(MarkdownConverterInterface $commonMarkConverter = null)
+    public function __construct(MarkdownConverterInterface|null $commonMarkConverter = null)
     {
-        $this->parser = $commonMarkConverter ?: new CommonMarkConverter;
+        $this->parser = $commonMarkConverter ?: new CommonMarkConverter();
     }
 
     public function parse(string $markdown): string
     {
-        return $this->parser->convertToHtml($markdown)->getContent();
+        return $this->parser?->convertToHtml($markdown)?->getContent() ?? '';
     }
 }

@@ -5,11 +5,13 @@ namespace Mni\FrontYAML\Test;
 use Mni\FrontYAML\Parser;
 use PHPUnit\Framework\TestCase;
 
-class FunctionalTest extends TestCase
+use function str_replace;
+
+final class FunctionalTest extends TestCase
 {
-    public function testSimpleDocument()
+    public function testSimpleDocument(): void
     {
-        $parser = new Parser;
+        $parser = new Parser();
 
         $str = <<<EOF
 ---
@@ -23,9 +25,9 @@ EOF;
         $this->assertSame("<p>This <strong>strong</strong></p>\n", $document->getContent());
     }
 
-    public function testEscaping()
+    public function testEscaping(): void
     {
-        $parser = new Parser;
+        $parser = new Parser();
 
         $str = <<<EOF
 ---
@@ -52,10 +54,10 @@ EOF;
         $this->assertSame("<p>Foo</p>\n", $document->getContent());
     }
 
-    public function testMultilineMarkdown()
+    public function testMultilineMarkdown(): void
     {
-        $parser = new Parser;
-        $str = <<<EOF
+        $parser   = new Parser();
+        $str      = <<<EOF
 Foo
 
 Bar
@@ -69,9 +71,9 @@ EOF;
         $this->assertEquals($this->normalizeEOL($expected), $this->normalizeEOL($document->getContent()));
     }
 
-    public function testCrossOsMultiline()
+    public function testCrossOsMultiline(): void
     {
-        $parser = new Parser;
+        $parser  = new Parser();
         $content = <<<EOF
 ---
 lorem: ipsum
@@ -105,10 +107,10 @@ EOF;
         $this->assertSame($this->normalizeEOL($expectedHtml), $this->normalizeEOL($dosYaml['multiline']));
     }
 
-    public function testNonGreedySeparator()
+    public function testNonGreedySeparator(): void
     {
-        $parser = new Parser;
-        $content = <<<EOF
+        $parser   = new Parser();
+        $content  = <<<EOF
 ---
 lorem: ipsum
 ---
@@ -117,10 +119,10 @@ Lorem
 Ipsum
 EOF;
         $document = $parser->parse($content);
-        $this->assertSame(array('lorem' => 'ipsum'), $document->getYAML());
+        $this->assertSame(['lorem' => 'ipsum'], $document->getYAML());
     }
 
-    private function normalizeEOL($str)
+    private function normalizeEOL(string $str): string|array
     {
         return str_replace("\r", '', $str);
     }
