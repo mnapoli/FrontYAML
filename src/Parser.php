@@ -15,18 +15,24 @@ class Parser
     /**
      * @var YAMLParser
      */
-    private $yamlParser;
+    private YAMLParser $yamlParser;
 
     /**
      * @var MarkdownParser
      */
-    private $markdownParser;
+    private MarkdownParser $markdownParser;
 
+    /**
+     * @var string[]
+     */
     private array $startSep;
 
+    /** @var string[] */
     private array $endSep;
 
     /**
+     * @param ?YAMLParser $yamlParser Set a custom YAMLParser instance. Fallback is SymfonyYAMLParser if null.
+     * @param ?MarkdownParser $markdownParser Set a custom MarkdownParser instance. Fallback is CommonMarkParser if null.
      * @param string|string[] $startSep
      * @param string|string[] $endSep
      */

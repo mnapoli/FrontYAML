@@ -4,25 +4,25 @@ namespace Mni\FrontYAML;
 
 class Document
 {
-    /** @var mixed */
-    private $yaml;
+    /** @var string|array<string, mixed>|null */
+    private mixed $yaml;
 
     private string $content;
 
     /**
-     * @param mixed $yaml YAML content.
+     * @param string|array<string, mixed>|null $yaml YAML content.
      * @param string $content Content of the document.
      */
-    public function __construct($yaml, string $content)
+    public function __construct(mixed $yaml, string $content)
     {
         $this->yaml = $yaml;
         $this->content = $content;
     }
 
     /**
-     * @return mixed YAML content.
+     * @return string|array<string, mixed>|null YAML content.
      */
-    public function getYAML()
+    public function getYAML(): mixed
     {
         return $this->yaml;
     }
