@@ -1,5 +1,6 @@
 {
     "name": "mnapoli/front-yaml",
+    "description": "YAML Front matter parser",
     "license": "MIT",
     "autoload": {
         "psr-4": {
